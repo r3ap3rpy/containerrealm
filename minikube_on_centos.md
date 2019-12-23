@@ -57,5 +57,36 @@ You can get status of your minikube with the following command aswell.
 
 ![status](./pics/status.PNG)
 
+Getting status of the kubernetes setup is done with **kubectl get all** command.
 
+![state](./pics/state.PNG)
 
+In order to apply a pod definition yaml you issue the following command.
+
+``` bash
+kubectl apply -f <filename.yaml>
+```
+
+Gather information about a pod.
+
+``` bash
+kubectl describe pod <name>
+```
+
+Get the IP of the minikube.
+
+``` bash
+minikube ip
+```
+
+Execute a command in a pod.
+
+``` bash
+kubectl exec <name> <command>
+```
+
+Open up an interactive shell.
+
+``` bash
+ kubectl -it exec <name> sh
+```
