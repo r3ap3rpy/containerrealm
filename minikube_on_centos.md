@@ -30,4 +30,32 @@ The output would be something like this.
 
 ![version](./pics/version.PNG)
 
+Now let's install dependencies.
+
+``` bash
+sudo yum install qemu-kvm libvirt libvirt-python libguestfs-tools virt-install -y
+```
+
+Let's enable startup on boot for the **libvirtd** service, and start it now.
+
+``` bash
+systemctl enable libvirtd
+systemctl start libvirtd
+```
+
+There is a catch however, you need to add your user to the **libvirt** group. 
+
+``` bash
+usermod --append --groups libvirt `whoami`
+```
+
+Now we are ready to start minikube with the **minikube start** command.
+
+![start](./pics/start.PNG)
+
+You can get status of your minikube with the following command aswell.
+
+![status](./pics/status.PNG)
+
+
 
