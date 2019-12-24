@@ -49,7 +49,7 @@ There is a catch however, you need to add your user to the **libvirt** group.
 usermod --append --groups libvirt `whoami`
 ```
 
-Now we are ready to start minikube with the **minikube start** command.
+Now we are ready to start minikube with the **minikube start** command, after the system was rebooted.
 
 ![start](./pics/start.PNG)
 
