@@ -90,3 +90,57 @@ Open up an interactive shell.
 ``` bash
  kubectl -it exec <name> sh
 ```
+
+Delete pod or service, it will gracefully terminate
+
+``` bash
+kubectl delete pod/service <name>
+```
+
+Delete every pod or service or replica set.
+
+``` bash
+kubectl delete po/svc --all
+```
+
+Deployments provide a 0 downtime rolling update!
+
+Applying a changed deploment yaml will perform a rolling upgrade.
+
+Getting rollout status of a deployment.
+
+``` bash
+kubectl rollout status deploy <name>
+```
+
+Get deployment history.
+
+``` bash
+kubectl rollout history deploy <name>
+```
+
+Undo deployment.
+
+``` bash
+kubectl rollout undo deploy <name> --to-revision=<id>
+```
+
+When you do a rollout or rollback your configuration files can drift from your yaml files.
+
+# Networking and service discovery
+
+Namespaces help separate network segments like front-end and back-end.
+
+**kubectl get all <namespace>** helps you navigate namespaces.
+
+**kubectl get namespaces** gives you a list of namespaces.
+
+Builtin namespaces:
+- kube-public
+- kube-system
+
+**kubectl get pods -n kube-system** gives you the list of pods that come by default with minikube.
+
+**kubectl describe service kube-dns -n kube-system** we can describe other entities in different namespaces by defining the one it lives in.
+
+nslookup tells you the namespace of the resolved IP if it's present.

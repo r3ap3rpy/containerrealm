@@ -6,6 +6,7 @@ metadata:
 spec:
   selector:
     app: webapp
+    # you can remove the below line when you have a replicaset for your pod
     release: "0-5"
 
   ports:
