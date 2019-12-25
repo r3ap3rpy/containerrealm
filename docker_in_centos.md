@@ -39,4 +39,4 @@ We should see something similar.
 
 Testing the app is rather easy.
 
-![dtest](dtest.PNG)
+![dtest](./pics/dtest.PNG)
