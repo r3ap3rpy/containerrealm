@@ -37,6 +37,6 @@ We should see something similar.
 
 ![drun](./pics/drun.PNG)
 
-Testing the app is rather easy.
+Testing the app is rather easy, with the **curl http://0.0.0.0:8080**, the response should look like this.
 
 ![dtest](./pics/dtest.PNG)

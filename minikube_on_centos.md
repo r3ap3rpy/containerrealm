@@ -1,6 +1,9 @@
 ### Minukube on CentOS7 with VMWare Workstation.
 
-You need to have a CentOS installed with at least 4vCPU and 4GB-s of RAM.
+**Minikube user: docker**
+**Minikube pass: tcuser**
+
+You need to have a CentOS installed with at least 4vCPU and 48GB-s of RAM.
 
 You also need to enable virtualization.
 
@@ -144,3 +147,13 @@ Builtin namespaces:
 **kubectl describe service kube-dns -n kube-system** we can describe other entities in different namespaces by defining the one it lives in.
 
 nslookup tells you the namespace of the resolved IP if it's present.
+
+In order to delete every resource **kubectl delete -f .**
+
+In order to get the logs for a specific pod **kubectl logs -f <podname>**, only pods produce logs.
+
+ClusterIP is exposed to other pods, NodePort is exposed to the outside world.
+
+A Service becomes a DNS entry which help map ports to specific pods.
+
+In order to get a list of persistent volumes issue the **kubectl get pv**
