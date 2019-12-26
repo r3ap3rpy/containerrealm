@@ -157,3 +157,7 @@ ClusterIP is exposed to other pods, NodePort is exposed to the outside world.
 A Service becomes a DNS entry which help map ports to specific pods.
 
 In order to get a list of persistent volumes issue the **kubectl get pv**
+
+**DaemonSet** is like a **ReplicaSet** but knows it needs to run on every node.
+
+**StatefulSet** are special in a sense that they have stable names, not random stuff.
