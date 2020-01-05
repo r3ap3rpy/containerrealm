@@ -113,7 +113,7 @@ systemctl restart td-agent
 When we start up a docker container we should add the following arguments.
 
 ``` bash
-docker run -d --log-driver=fluentd --log-opt tag="docker.{.ID}" <container>
+docker run -d --log-driver=fluentd --log-opt tag="docker.{.ID}}" <container>
 ```
 
 This will become visible to our kibana web ui, and the logs will show something like this.
