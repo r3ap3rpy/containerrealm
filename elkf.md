@@ -151,3 +151,35 @@ This will become visible to our kibana web ui, and the logs will show something 
 2019-12-26 21:29:12.000000000 +0100 docker.*: {"container_id":"587623f8beb6636251457fb846dc13e940edb96cf34d905bc34998383ecd30ce","container_name":"/compassionate_dewdney","source":"stdout","log":"   Use a production WSGI server instead."}
 2019-12-26 21:29:12.000000000 +0100 docker.*: {"container_id":"587623f8beb6636251457fb846dc13e940edb96cf34d905bc34998383ecd30ce","container_name":"/compassionate_dewdney","source":"stdout","log":" * Debug mode: on"}
 ```
+
+Forwarding local logfiles.
+
+``` bash
+<source>
+  @type tail
+  tag <mytag>
+  path <mypath>
+  pos_file <my.pos>
+  format /(?<DATE>(.*?)) - (?<APP>(.*?)) - (?<LEVEL>(.*?)) - (?<MESSAGE>.*)/
+  time_format %Y-%m-%d %H:%M:%S,%z
+</source>
+
+<match *.**>
+  @type copy
+  <store>
+    @type elasticsearch
+    host elahost
+    port 9200
+    logstash_format true
+    logstash_prefix <pref>
+    logstash_dateformat %Y%m%d
+    include_tag_key true
+    type_name access_log
+    tag_key @log_name
+    flush_interval 1s
+  </store>
+  <store>
+    @type stdout
+  </store>
+</match>
+```
