@@ -54,7 +54,23 @@ Issue the install command.
 sudo yum install kibana -y 
 ```
 
+Once the installer is complete we want to allow accecss to the web interface from remote hosts.
+
+We exit the **/etc/kibana/kibana.yaml** file and replace the line.
+
+``` bash
+#Replace this line
+#server.host: "localhost"
+#With this
+server.host: "0.0.0.0"
+```
+
 Now once the install is complete you need to enable and start the service.
+
+``` bash
+systemctl enable kibana
+systemctl start kibana
+```
 
 ## Installing [Fluentd](https://docs.fluentd.org/installation/install-by-rpm)
 
@@ -78,29 +94,28 @@ After restart you can live check what logs are forwarded and processerd under th
 Let's modify our configuration.
 
 ``` bash
-<source>                                       
-  @type forward                                
-  port 24224                                   
-  bind 0.0.0.0                                 
-  tag docker.*                                 
-</source>                                      
-<match docker.*>                               
-  @type stdout                                 
-</match>                                       
-                                               
-<filter docker.**>                             
-  @type parser                                 
-  format json # apache2, nginx, etc...         
-  key_name log                                 
-  reserve_data true                            
-</filter>                                      
-                                               
-<match docker.*>                               
-  @type elasticsearch                          
-  host centosd                                 
-  port 9200                                    
-  logstash_format true                         
-  index_name fluentd                           
+<source>
+  @type forward
+  port 24224
+  bind 0.0.0.0
+</source>
+<match *.**>
+  @type copy
+  <store>
+    @type elasticsearch
+    host centosgui
+    port 9200
+    logstash_format true
+    logstash_prefix fluentd
+    logstash_dateformat %Y%m%d
+    include_tag_key true
+    type_name access_log
+    tag_key @log_name
+    flush_interval 1s
+  </store>
+  <store>
+    @type stdout
+  </store>
 </match>
 ```                                       
 
@@ -113,7 +128,7 @@ systemctl restart td-agent
 When we start up a docker container we should add the following arguments.
 
 ``` bash
-docker run -d --log-driver=fluentd --log-opt tag="docker.{.ID}}" <container>
+docker run -d -p 8080:8080 --log-driver=fluentd --log-opt tag=webapp <container>
 ```
 
 This will become visible to our kibana web ui, and the logs will show something like this.
