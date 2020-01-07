@@ -103,7 +103,7 @@ Let's modify our configuration.
   @type copy
   <store>
     @type elasticsearch
-    host centosgui
+    host centose
     port 9200
     logstash_format true
     logstash_prefix fluentd
@@ -155,31 +155,37 @@ This will become visible to our kibana web ui, and the logs will show something 
 Forwarding local logfiles.
 
 ``` bash
-<source>
-  @type tail
-  tag <mytag>
-  path <mypath>
-  pos_file <my.pos>
-  format /(?<DATE>(.*?)) - (?<APP>(.*?)) - (?<LEVEL>(.*?)) - (?<MESSAGE>.*)/
-  time_format %Y-%m-%d %H:%M:%S,%z
-</source>
+<source>                                                                           
+  @type tail                                                                       
+  tag pythonapp                                                                    
+  path /home/ansible/app/app.log                                                   
+  pos_file /home/ansible/app/app.log.pos                                           
+  format /(?<DATE>(.*?)) - (?<APP>(.*?)) - (?<LEVEL>(.*?)) - (?<MESSAGE>.*)/       
+  time_format %Y-%m-%d %H:%M:%S,%z                                                 
+</source>                                                                          
+<match *.**>                                                                       
+  @type copy                                                                       
+  <store>                                                                          
+     @type elasticsearch                                                           
+     host centose                                                                  
+     port 9200                                                                     
+     logstash_format true                                                          
+     logstash_prefix pywebapp                                                      
+     logstash_dateformat %Y%m%d                                                    
+     include_tag_key true                                                          
+     type_name access_log                                                          
+     tag_key @log_name                                                             
+     flush_interval 1s                                                             
+  </store>                                                                         
+  <store>                                                                          
+    @type stdout                                                                   
+  </store>                                                                         
+</match>                                                                           
+```
 
-<match *.**>
-  @type copy
-  <store>
-    @type elasticsearch
-    host elahost
-    port 9200
-    logstash_format true
-    logstash_prefix <pref>
-    logstash_dateformat %Y%m%d
-    include_tag_key true
-    type_name access_log
-    tag_key @log_name
-    flush_interval 1s
-  </store>
-  <store>
-    @type stdout
-  </store>
-</match>
+You will need to touch and chmod the follwing.
+
+``` bash
+touch /home/ansible/app/app.log.pos
+chmod augo+rw /home/ansible/app/app.log.pos
 ```
